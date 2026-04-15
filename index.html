@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuroConectar - Desenvolvimento Infantil</title>
+    <meta name="description" content="Clínica especializada em fonoaudiologia e terapia ocupacional para o desenvolvimento infantil em Santa Maria - RS.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            DEFAULT: '#7BB69A', // Verde principal
+                            light: '#9CCAB4',
+                            dark: '#5E9A7D',
+                        },
+                        secondary: {
+                            DEFAULT: '#DB869A', // Rosa principal
+                            light: '#E5A5B4',
+                            dark: '#C16A7E',
+                        },
+                        accent: {
+                            DEFAULT: '#B4C6B7', // Verde claro
+                            light: '#D1DCD3',
+                            dark: '#97AF9B',
+                        },
+                        warm: {
+                            DEFAULT: '#F7EDE5', // Bege claro fundo
+                            dark: '#E1D1C9', // Bege secundário
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Helvetica Neue', 'Arial', 'sans-serif'],
+                        display: ['Helvetica Neue', 'Arial', 'sans-serif'],
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.8s ease-out forwards',
+                        'slide-up': 'slideUp 0.8s ease-out forwards',
+                        'float': 'float 3s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style type="text/tailwindcss">
+        @layer base {
+            body {
+                @apply text-[#4A4440] bg-[#F7EDE5] font-sans;
+            }
+            h1, h2, h3, h4 {
+                @apply font-display font-bold tracking-tight text-[#3D3834];
+            }
+        }
+        
+        .glass-nav {
+            @apply bg-[#F7EDE5]/80 backdrop-blur-md border-b border-[#E1D1C9];
+        }
+
+        .btn-primary {
+            @apply bg-primary text-white px-8 py-4 rounded-[12px] font-bold transition-all duration-300 hover:opacity-90 hover:shadow-lg active:scale-95;
+        }
+
+        .btn-outline {
+            @apply border-2 border-primary text-primary px-8 py-4 rounded-[12px] font-bold transition-all duration-300 hover:bg-primary/5;
+        }
+
+        .card {
+            @apply bg-white p-6 rounded-[24px] border border-black/[0.02] shadow-[0_4px_15px_rgba(0,0,0,0.03)] transition-all duration-300 hover:shadow-xl hover:-translate-y-1;
+        }
+
+        .bento-grid {
+            @apply grid gap-4 p-4 md:p-10;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+
+        @media (min-width: 1024px) {
+            .bento-grid {
+                grid-template-columns: 1.2fr 1fr 0.8fr;
+                grid-auto-rows: minmax(150px, auto);
+            }
+            .hero-span { grid-column: 1 / 2; grid-row: 1 / 4; }
+            .about-span { grid-column: 1 / 2; grid-row: 4 / 6; }
+            .pro-span { grid-column: 2 / 3; grid-row: 1 / 3; }
+            .services-span { grid-column: 2 / 3; grid-row: 3 / 6; }
+            .testimonial-span { grid-column: 3 / 4; grid-row: 1 / 2; }
+            .info-span { grid-column: 3 / 4; grid-row: 2 / 4; }
+            .map-span { grid-column: 3 / 4; grid-row: 4 / 6; }
+            .fotos-span { grid-column: 1 / 4; }
+        }
+
+        .section-padding {
+            @apply py-10 px-6;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .btn-primary {
+            @apply bg-primary text-white px-8 py-4 rounded-2xl font-black shadow-lg hover:shadow-primary/20 hover:-translate-y-1 transition-all active:scale-95;
+        }
+        .btn-outline {
+            @apply border-2 border-primary text-primary px-8 py-4 rounded-2xl font-black hover:bg-primary hover:text-white transition-all active:scale-95;
+        }
+        .glass-nav {
+            @apply bg-white/70 backdrop-blur-md border-b border-white/20;
+        }
+        .bg-warm {
+            @apply bg-[#F7EDE5];
+        }
+        .text-accent-dark {
+            @apply text-[#DB869A];
+        }
+        .whatsapp-btn {
+            @apply fixed bottom-8 right-8 z-50 bg-[#25D366] text-white p-5 rounded-3xl shadow-2xl transition-all duration-300 hover:scale-110 active:scale-95 hover:rotate-6;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="fixed top-0 w-full z-50 glass-nav transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="relative w-10 h-10">
+                    <div class="absolute inset-0 bg-primary rounded-lg rotate-6 group-hover:rotate-12 transition-transform"></div>
+                    <div class="absolute inset-0 bg-secondary rounded-lg -rotate-3 group-hover:-rotate-6 transition-transform opacity-80"></div>
+                    <div class="absolute inset-0 flex items-center justify-center text-white">
+                        <i data-lucide="puzzle" class="w-5 h-5"></i>
+                    </div>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-xl font-display font-black text-[#3D3834] leading-none">Neuro<span class="text-primary">Conectar</span></span>
+                    <span class="text-[9px] uppercase tracking-[0.2em] font-bold text-secondary">Desenvolvimento Infantil</span>
+                </div>
+            </a>
+
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex items-center gap-8">
+                <a href="#sobre" class="text-sm font-bold hover:text-primary transition-colors">Sobre</a>
+                <a href="#servicos" class="text-sm font-bold hover:text-primary transition-colors">Serviços</a>
+                <a href="#profissionais" class="text-sm font-bold hover:text-primary transition-colors">Equipe</a>
+                <a href="#contato" class="text-sm font-bold hover:text-primary transition-colors">Contato</a>
+                <a href="https://wa.me/5555992221068" target="_blank" class="bg-primary text-white px-6 py-2.5 rounded-full text-sm font-bold hover:shadow-lg transition-all">Agendar</a>
+            </div>
+
+            <!-- Mobile Menu Toggle -->
+            <button class="md:hidden text-gray-900" id="menu-toggle">
+                <i data-lucide="menu"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="fixed inset-0 bg-white z-[60] hidden flex flex-col items-center justify-center gap-8">
+        <button class="absolute top-6 right-6 text-gray-900" id="menu-close">
+            <i data-lucide="x" class="w-8 h-8"></i>
+        </button>
+        <a href="#sobre" class="text-2xl font-bold">Sobre</a>
+        <a href="#servicos" class="text-2xl font-bold">Serviços</a>
+        <a href="#profissionais" class="text-2xl font-bold">Equipe</a>
+        <a href="#contato" class="text-2xl font-bold">Contato</a>
+        <a href="https://wa.me/5555992221068" target="_blank" class="btn-primary">Agendar Agora</a>
+    </div>
+
+    <!-- Hero Section: Full Bleed & Spacious -->
+    <section id="hero" class="min-h-screen flex items-center pt-20 relative overflow-hidden bg-warm">
+        <!-- Decorative Background Elements -->
+        <div class="absolute top-0 right-0 w-[40vw] h-[40vw] bg-primary/5 rounded-full blur-[120px] -mr-20 -mt-20"></div>
+        <div class="absolute bottom-0 left-0 w-[30vw] h-[30vw] bg-secondary/10 rounded-full blur-[100px] -ml-20 -mb-20"></div>
+        
+        <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center relative z-10">
+            <div class="space-y-8 animate-slide-up">
+                <div class="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full border border-primary/10 shadow-sm">
+                    <div class="flex text-primary">
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                    </div>
+                    <span class="text-xs font-bold uppercase tracking-widest text-[#4A4440]">Avaliação 5 Estrelas</span>
+                </div>
+                
+                <h1 class="text-5xl md:text-7xl lg:text-8xl leading-[0.95] font-black text-[#3D3834]">
+                    Cuidado que <span class="text-primary">conecta</span> e transforma.
+                </h1>
+                
+                <p class="text-xl text-[#4A4440]/80 max-w-lg leading-relaxed">
+                    Fonoaudiologia e Terapia Ocupacional especializada no desenvolvimento infantil. Um espaço seguro para florescer o potencial de cada criança.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row gap-4 pt-4">
+                    <a href="https://wa.me/5555992221068" target="_blank" class="btn-primary flex items-center justify-center gap-3 text-lg">
+                        <i data-lucide="calendar" class="w-5 h-5"></i>
+                        Agendar Avaliação
+                    </a>
+                    <a href="#servicos" class="btn-outline flex items-center justify-center gap-2 text-lg">
+                        Nossos Serviços
+                    </a>
+                </div>
+            </div>
+            
+            <div class="relative animate-fade-in" style="animation-delay: 0.3s">
+                <div class="relative rounded-[40px] overflow-hidden shadow-2xl aspect-[4/5] lg:aspect-square">
+                    <img src="https://lh3.googleusercontent.com/gps-cs-s/APNQkAEKfOX5nzgr11bKGAFth3z3geEuqLEoEtoqEG-T8kwclbVgwYm4MydzIjJjqMwy7WFaK8PhebR_LZiNz-wGYPD4M3rJXPuRVahNuFNh3CciDs03p-w2MpJTUotO-utNJtYalq0B7LRvYISf=w1000-h1000-k-no" alt="Criança feliz" class="w-full h-full object-cover" referrerPolicy="no-referrer">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+                </div>
+                <!-- Floating Badge -->
+                <div class="absolute -bottom-6 -left-6 bg-white p-6 rounded-3xl shadow-xl animate-float border border-primary/5">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 bg-secondary rounded-2xl flex items-center justify-center text-white">
+                            <i data-lucide="heart" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <p class="text-[10px] font-bold uppercase tracking-widest text-gray-400">Atendimento</p>
+                            <p class="text-lg font-black text-[#3D3834]">Humanizado</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sobre Section: Z-Pattern -->
+    <section id="sobre" class="py-32 bg-white reveal">
+        <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-20 items-center">
+            <div class="relative">
+                <div class="absolute -top-10 -left-10 w-40 h-40 bg-accent/20 rounded-full blur-3xl"></div>
+                <div class="grid grid-cols-2 gap-4">
+                    <img src="https://lh3.googleusercontent.com/p/AF1QipO40wP2kQ3hRZkRGks2hNLPpW6n0fwvCIp7QsTX=w1000-h1000-k-no" alt="Clínica" class="rounded-[32px] shadow-lg mt-12" referrerPolicy="no-referrer">
+                    <img src="https://lh3.googleusercontent.com/p/AF1QipMmqnbv7dRIb09MBfTPiMf-pUP_eYYcQkvCRC9A=w1000-h1000-k-no" alt="Espaço" class="rounded-[32px] shadow-lg" referrerPolicy="no-referrer">
+                </div>
+            </div>
+            <div class="space-y-8">
+                <span class="text-primary font-black tracking-[0.3em] uppercase text-xs">A Clínica</span>
+                <h2 class="text-4xl md:text-5xl leading-tight">Especialistas em transformar o futuro através do brincar</h2>
+                <p class="text-lg text-[#4A4440]/80 leading-relaxed">
+                    A NeuroConectar é um centro de referência em Santa Maria - RS, focado no neurodesenvolvimento infantil. Acreditamos que cada criança é única e merece um olhar atento e especializado.
+                </p>
+                <div class="space-y-4 pt-4">
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center text-primary">
+                            <i data-lucide="check" class="w-5 h-5"></i>
+                        </div>
+                        <p class="font-bold text-[#3D3834]">Avaliação Multidisciplinar Completa</p>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 bg-secondary/10 rounded-full flex items-center justify-center text-secondary">
+                            <i data-lucide="check" class="w-5 h-5"></i>
+                        </div>
+                        <p class="font-bold text-[#3D3834]">Intervenção Baseada em Evidências</p>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 bg-accent/20 rounded-full flex items-center justify-center text-accent-dark">
+                            <i data-lucide="check" class="w-5 h-5"></i>
+                        </div>
+                        <p class="font-bold text-[#3D3834]">Acompanhamento Familiar Próximo</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Serviços Section: Structured Grid -->
+    <section id="servicos" class="py-32 bg-warm reveal">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center max-w-3xl mx-auto mb-20 space-y-4">
+                <span class="text-secondary font-black tracking-[0.3em] uppercase text-xs">Especialidades</span>
+                <h2 class="text-4xl md:text-5xl">Como podemos ajudar seu filho?</h2>
+                <p class="text-[#4A4440]/70">Oferecemos terapias especializadas para diversas necessidades do desenvolvimento.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Fono -->
+                <div class="bg-white p-10 rounded-[40px] shadow-sm hover:shadow-xl transition-all border border-[#E1D1C9]/30 group">
+                    <div class="w-16 h-16 bg-primary/10 text-primary rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
+                        <i data-lucide="message-circle" class="w-8 h-8"></i>
+                    </div>
+                    <h3 class="text-2xl mb-4">Fonoaudiologia</h3>
+                    <p class="text-[#4A4440]/70 leading-relaxed mb-6">Foco em linguagem, fala, audição e deglutição, auxiliando na comunicação e alimentação.</p>
+                    <ul class="space-y-2 text-sm font-bold text-primary">
+                        <li>• Atrasos de Fala</li>
+                        <li>• Seletividade Alimentar</li>
+                        <li>• Linguagem Social</li>
+                    </ul>
+                </div>
+
+                <!-- TO -->
+                <div class="bg-white p-10 rounded-[40px] shadow-sm hover:shadow-xl transition-all border border-[#E1D1C9]/30 group">
+                    <div class="w-16 h-16 bg-secondary/10 text-secondary rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
+                        <i data-lucide="puzzle" class="w-8 h-8"></i>
+                    </div>
+                    <h3 class="text-2xl mb-4">Terapia Ocupacional</h3>
+                    <p class="text-[#4A4440]/70 leading-relaxed mb-6">Estimulação da autonomia, processamento sensorial e desenvolvimento motor global.</p>
+                    <ul class="space-y-2 text-sm font-bold text-secondary">
+                        <li>• Integração Sensorial</li>
+                        <li>• Autonomia Diária</li>
+                        <li>• Coordenação Motora</li>
+                    </ul>
+                </div>
+
+                <!-- Avaliação -->
+                <div class="bg-white p-10 rounded-[40px] shadow-sm hover:shadow-xl transition-all border border-[#E1D1C9]/30 group">
+                    <div class="w-16 h-16 bg-accent/20 text-accent-dark rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
+                        <i data-lucide="brain" class="w-8 h-8"></i>
+                    </div>
+                    <h3 class="text-2xl mb-4">Neurodesenvolvimento</h3>
+                    <p class="text-[#4A4440]/70 leading-relaxed mb-6">Atendimento especializado para TEA, TDAH e outros transtornos do desenvolvimento.</p>
+                    <ul class="space-y-2 text-sm font-bold text-accent-dark">
+                        <li>• TEA e TDAH</li>
+                        <li>• Avaliação Cognitiva</li>
+                        <li>• Intervenção Precoce</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Profissionais Section: Distinct Layer -->
+    <section id="profissionais" class="py-32 bg-primary text-white reveal">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid lg:grid-cols-2 gap-20 items-center">
+                <div class="space-y-8">
+                    <span class="text-white/60 font-black tracking-[0.3em] uppercase text-xs">Nossa Equipe</span>
+                    <h2 class="text-4xl md:text-5xl text-white">Especialistas dedicadas ao seu filho</h2>
+                    <p class="text-white/80 text-lg leading-relaxed">
+                        Nossas profissionais possuem formação sólida e mestrado pela UFSM, com anos de experiência prática em neuropediatria.
+                    </p>
+                    <div class="flex gap-4 pt-4">
+                        <a href="https://wa.me/5555992221068" target="_blank" class="bg-white text-primary px-8 py-4 rounded-2xl font-black hover:bg-warm transition-colors">Conhecer mais</a>
+                    </div>
+                </div>
+                <div class="grid sm:grid-cols-2 gap-8">
+                    <!-- Tia Aline -->
+                    <div class="bg-white/10 backdrop-blur-md p-8 rounded-[40px] border border-white/20 text-center space-y-6">
+                        <div class="w-32 h-32 mx-auto rounded-full border-4 border-secondary overflow-hidden shadow-xl">
+                            <img src="https://lh3.googleusercontent.com/p/AF1QipOrY0nhydjvuQuhYFfb00e8YEsz4CgYNwNNtELS=w1000-h1000-k-no" alt="Aline Costa" class="w-full h-full object-cover" referrerPolicy="no-referrer">
+                        </div>
+                        <div>
+                            <h4 class="text-2xl text-white">Tia Aline</h4>
+                            <p class="text-secondary font-bold uppercase text-[10px] tracking-widest">Fonoaudióloga</p>
+                        </div>
+                        <p class="text-sm text-white/70">Mestre pela UFSM, especialista em atrasos de linguagem e disfagia.</p>
+                    </div>
+                    <!-- Tia Gabi -->
+                    <div class="bg-white/10 backdrop-blur-md p-8 rounded-[40px] border border-white/20 text-center space-y-6">
+                        <div class="w-32 h-32 mx-auto rounded-full border-4 border-accent overflow-hidden shadow-xl">
+                            <img src="https://lh3.googleusercontent.com/p/AF1QipMbXTec22a5XRVUXi2tzNtFuZmez9NSduZaqnp8=w1000-h1000-k-no" alt="Gabriela Nunes" class="w-full h-full object-cover" referrerPolicy="no-referrer">
+                        </div>
+                        <div>
+                            <h4 class="text-2xl text-white">Tia Gabi</h4>
+                            <p class="text-accent font-bold uppercase text-[10px] tracking-widest">Terapeuta Ocupacional</p>
+                        </div>
+                        <p class="text-sm text-white/70">Mestre pela UFSM, especialista em integração sensorial e motricidade.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Galeria Section: Visual Break -->
+    <section id="fotos" class="py-32 bg-white reveal">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row items-end justify-between mb-16 gap-6">
+                <div class="space-y-4">
+                    <span class="text-primary font-black tracking-[0.3em] uppercase text-xs">Ambiente</span>
+                    <h2 class="text-4xl">Um espaço preparado para acolher</h2>
+                </div>
+                <p class="text-[#4A4440]/60 max-w-sm">Cada detalhe da nossa clínica foi pensado para ser lúdico, seguro e estimulante.</p>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6" id="gallery">
+                <div class="aspect-square rounded-[32px] overflow-hidden shadow-md group cursor-pointer">
+                    <img src="https://lh3.googleusercontent.com/p/AF1QipOka5XS8OZyaF71IBGFBE59PQJq3yQ_-iV2XTXx=w1000-h1000-k-no" alt="Consultório" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 gallery-item" referrerPolicy="no-referrer">
+                </div>
+                <div class="aspect-square rounded-[32px] overflow-hidden shadow-md group cursor-pointer">
+                    <img src="https://lh3.googleusercontent.com/p/AF1QipOBsjZ3dHNVdOWeOw1hFxIQBsDEd9g4QVLZiC-3=w1000-h1000-k-no" alt="Brinquedos" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 gallery-item" referrerPolicy="no-referrer">
+                </div>
+                <div class="aspect-square rounded-[32px] overflow-hidden shadow-md group cursor-pointer">
+                    <img src="https://lh3.googleusercontent.com/gps-cs-s/APNQkAHHfDZaI0nCz64rcupJCEVp70YwQ3TMrse7YDGs1CZ4YQj9fqLbIz0qgUxU9xZY_JJQ0WpzKIYgdk_vYrmWgA04XT3b1_JTIkSpaBDcr_C6gk8806jKi7u4yg0qftNLL22fwF8nMJwrHsrh=w1000-h1000-k-no" alt="Atendimento" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 gallery-item" referrerPolicy="no-referrer">
+                </div>
+                <div class="aspect-square rounded-[32px] overflow-hidden shadow-md group cursor-pointer">
+                    <img src="https://lh3.googleusercontent.com/gps-cs-s/APNQkAHrAnpaRdUykpE9_88n_NVNUVQXm-qaKR29kFbsY2hwG4TvAGfzgJ5wXCaKVY6VsG0tpNjB-ew7plT4Kibqdv8jVaQm1IyuyBfSxrLAV0YaBCVFsWYMeYXkPvhX5tZOXxUMaF7XyA=w1000-h1000-k-no" alt="Recepção" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 gallery-item" referrerPolicy="no-referrer">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Depoimentos Section: Social Proof -->
+    <section class="py-32 bg-secondary/5 reveal">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-20 space-y-4">
+                <span class="text-secondary font-black tracking-[0.3em] uppercase text-xs">Depoimentos</span>
+                <h2 class="text-4xl md:text-5xl">O que as famílias dizem</h2>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Depoimento 1 -->
+                <div class="bg-white p-10 rounded-[40px] shadow-sm border border-secondary/10 relative">
+                    <div class="absolute -top-5 left-10 w-10 h-10 bg-secondary rounded-full flex items-center justify-center text-white shadow-lg">
+                        <i data-lucide="quote" class="w-5 h-5"></i>
+                    </div>
+                    <div class="flex text-accent-dark mb-6">
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                    </div>
+                    <p class="text-[#4A4440]/80 italic mb-8 leading-relaxed">"Meu filho faz terapia com a fono Aline, uma excelente profissional. Muito atenciosa e dedicada."</p>
+                    <div class="flex items-center gap-4">
+                        <img src="https://lh3.googleusercontent.com/a-/ALV-UjXkyu2e7y2yY0TZIC2_b19mTvasCIFbgu49XexhkWv8AY2AhUU=w100-h100-p-rp-mo-br100" alt="Elizabeth" class="w-12 h-12 rounded-full border-2 border-secondary" referrerPolicy="no-referrer">
+                        <div>
+                            <p class="font-black text-[#3D3834]">Elizabeth Pereira</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Depoimento 2 -->
+                <div class="bg-white p-10 rounded-[40px] shadow-sm border border-secondary/10 relative">
+                    <div class="absolute -top-5 left-10 w-10 h-10 bg-secondary rounded-full flex items-center justify-center text-white shadow-lg">
+                        <i data-lucide="quote" class="w-5 h-5"></i>
+                    </div>
+                    <div class="flex text-accent-dark mb-6">
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                    </div>
+                    <p class="text-[#4A4440]/80 italic mb-8 leading-relaxed">"Super indico os atendimentos na Neuro Conectar. Profissionais maravilhosas e espaço acolhedor."</p>
+                    <div class="flex items-center gap-4">
+                        <img src="https://lh3.googleusercontent.com/a/ACg8ocJQqnLkJXEF3SSLusDbQPlFg9ey-X_d_NdaYs55nbMLQNM-Yg=w100-h100-p-rp-mo-br100" alt="Francele" class="w-12 h-12 rounded-full border-2 border-secondary" referrerPolicy="no-referrer">
+                        <div>
+                            <p class="font-black text-[#3D3834]">Francele Cassenot</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Depoimento 3 -->
+                <div class="bg-white p-10 rounded-[40px] shadow-sm border border-secondary/10 relative">
+                    <div class="absolute -top-5 left-10 w-10 h-10 bg-secondary rounded-full flex items-center justify-center text-white shadow-lg">
+                        <i data-lucide="quote" class="w-5 h-5"></i>
+                    </div>
+                    <div class="flex text-accent-dark mb-6">
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                    </div>
+                    <p class="text-[#4A4440]/80 italic mb-8 leading-relaxed">"Meu filho está em atendimento com a Fono Aline e estamos amando a evolução. Recomendo muito!"</p>
+                    <div class="flex items-center gap-4">
+                        <img src="https://lh3.googleusercontent.com/a-/ALV-UjXoLleDFuV9CFAFTLGWGqYjdUAHhy5S9Q381t2L4YcKzEG-57vD=w100-h100-p-rp-mo-br100" alt="Joice" class="w-12 h-12 rounded-full border-2 border-secondary" referrerPolicy="no-referrer">
+                        <div>
+                            <p class="font-black text-[#3D3834]">Joice Pichler</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contato & Localização: Split Layout -->
+    <section id="contato" class="py-32 bg-white reveal">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div class="space-y-12">
+                    <div class="space-y-4">
+                        <span class="text-primary font-black tracking-[0.3em] uppercase text-xs">Onde Estamos</span>
+                        <h2 class="text-4xl md:text-5xl">Venha nos visitar</h2>
+                        <p class="text-[#4A4440]/70">Localizada no coração de Santa Maria, nossa clínica oferece fácil acesso e comodidade para sua família.</p>
+                    </div>
+                    
+                    <div class="space-y-8">
+                        <div class="flex items-start gap-6">
+                            <div class="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center text-primary flex-shrink-0">
+                                <i data-lucide="map-pin" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xl mb-1">Endereço</h4>
+                                <p class="text-[#4A4440]/70">R. Pinheiro Machado, 2350 - Bloco B, Sala 409<br>Centro, Santa Maria - RS</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-6">
+                            <div class="w-14 h-14 bg-secondary/10 rounded-2xl flex items-center justify-center text-secondary flex-shrink-0">
+                                <i data-lucide="clock" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xl mb-1">Horário</h4>
+                                <p class="text-[#4A4440]/70">Segunda a Sexta<br>09:00 às 17:00</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-6">
+                            <div class="w-14 h-14 bg-accent/20 rounded-2xl flex items-center justify-center text-accent-dark flex-shrink-0">
+                                <i data-lucide="phone" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xl mb-1">WhatsApp</h4>
+                                <p class="text-[#4A4440]/70">(55) 99222-1068</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="h-[600px] rounded-[48px] overflow-hidden shadow-2xl border-8 border-warm relative">
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3469.347318053748!2d-53.8122396!3d-29.6864147!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9503cb6630f57631%3A0x670f5e7149a4f6!2sR.%20Pinheiro%20Machado%2C%202350%20-%20Centro%2C%20Santa%20Maria%20-%20RS%2C%2097050-600!5e0!3m2!1spt-BR!2sbr!4v1713210000000!5m2!1spt-BR!2sbr" 
+                        width="100%" 
+                        height="100%" 
+                        style="border:0;" 
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Final -->
+    <section class="section-padding text-center reveal">
+        <div class="bg-primary rounded-[24px] p-12 md:p-20 text-white space-y-8 relative overflow-hidden shadow-xl">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-secondary/20 rounded-full -mr-32 -mt-32 blur-3xl"></div>
+            <div class="absolute bottom-0 left-0 w-64 h-64 bg-accent/20 rounded-full -ml-32 -mb-32 blur-3xl"></div>
+            
+            <h2 class="text-3xl md:text-5xl max-w-3xl mx-auto relative z-10 text-white font-black">Agende uma avaliação para seu filho e conecte-o ao seu melhor potencial</h2>
+            <p class="text-lg text-white/90 max-w-xl mx-auto relative z-10">Estamos prontas para caminhar junto com sua família nessa jornada de desenvolvimento.</p>
+            
+            <div class="relative z-10">
+                <a href="https://wa.me/5555992221068" target="_blank" class="bg-secondary text-white px-10 py-5 rounded-[12px] font-black text-lg shadow-xl hover:bg-secondary-light transition-all hover:scale-105 inline-flex items-center gap-3">
+                    <i data-lucide="message-circle"></i>
+                    Agendar via WhatsApp
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[#3D3834] text-white py-16">
+        <div class="section-padding grid md:grid-cols-3 gap-12 items-start">
+            <div class="space-y-6">
+                <a href="#" class="flex items-center gap-3 group">
+                    <div class="relative w-10 h-10">
+                        <div class="absolute inset-0 bg-primary rounded-lg rotate-6"></div>
+                        <div class="absolute inset-0 bg-secondary rounded-lg -rotate-3 opacity-80"></div>
+                        <div class="absolute inset-0 flex items-center justify-center text-white">
+                            <i data-lucide="puzzle" class="w-5 h-5"></i>
+                        </div>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-xl font-display font-black text-white leading-none">Neuro<span class="text-primary">Conectar</span></span>
+                        <span class="text-[10px] uppercase tracking-[0.2em] font-bold text-secondary">Desenvolvimento Infantil</span>
+                    </div>
+                </a>
+                <p class="text-white/60 text-sm leading-relaxed">Clínica especializada em Fonoaudiologia e Terapia Ocupacional. Um espaço seguro e colorido para o desenvolvimento do seu filho.</p>
+            </div>
+            
+            <div class="flex flex-col items-center gap-6">
+                <h4 class="text-sm font-bold uppercase tracking-widest text-white/40">Siga-nos</h4>
+                <div class="flex gap-4">
+                    <a href="https://www.instagram.com/neuro.conectar/" target="_blank" class="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center hover:bg-primary hover:scale-110 transition-all">
+                        <i data-lucide="instagram" class="w-6 h-6"></i>
+                    </a>
+                    <a href="https://www.facebook.com/profile.php?id=61561689560569" target="_blank" class="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center hover:bg-secondary hover:scale-110 transition-all">
+                        <i data-lucide="facebook" class="w-6 h-6"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="text-right space-y-2">
+                <p class="text-sm text-white/40">&copy; 2024 NeuroConectar.</p>
+                <p class="text-[10px] text-white/20">R. Pinheiro Machado, 2350 - Centro, Santa Maria - RS</p>
+                <p class="text-[10px] text-white/20">Desenvolvido com carinho.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating WhatsApp -->
+    <a href="https://wa.me/5555992221068" target="_blank" class="whatsapp-btn">
+        <i data-lucide="message-circle" class="w-8 h-8"></i>
+    </a>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Mobile Menu Toggle
+        const menuToggle = document.getElementById('menu-toggle');
+        const menuClose = document.getElementById('menu-close');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        if (menuToggle) {
+            menuToggle.addEventListener('click', () => {
+                mobileMenu.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            });
+        }
+
+        if (menuClose) {
+            menuClose.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+            });
+        }
+
+        // Close mobile menu on link click
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+            });
+        });
+
+        // Navbar Scroll Effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('bg-white/90', 'shadow-lg', 'py-2');
+                navbar.classList.remove('py-4');
+            } else {
+                navbar.classList.remove('bg-white/90', 'shadow-lg', 'py-2');
+                navbar.classList.add('py-4');
+            }
+        });
+
+        // Scroll Reveal Effect
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // Lightbox functionality
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const closeLightbox = document.getElementById('close-lightbox');
+        const galleryItems = document.querySelectorAll('.gallery-item');
+
+        galleryItems.forEach(item => {
+            item.addEventListener('click', () => {
+                lightboxImg.src = item.src;
+                lightbox.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        closeLightbox.addEventListener('click', () => {
+            lightbox.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        });
+
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) {
+                lightbox.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
